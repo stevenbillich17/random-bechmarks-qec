@@ -38,7 +38,7 @@ shots_orig = 200
 # --- Setup for qiskit_experiments ---
 physical_qubits = tuple(rb_pattern_orig[0])
 
-noise_model = NoiseModel(basis_gates=basis_gates_orig)
+noise_model = NoiseModel()
 noise_model.add_all_qubit_quantum_error(depolarizing_error(p1Q_orig, 1), ['u2'])
 noise_model.add_all_qubit_quantum_error(depolarizing_error(2 * p1Q_orig, 1), ['u3'])
 noise_model.add_all_qubit_quantum_error(depolarizing_error(p2Q_orig, 2), ['cx'])
@@ -49,12 +49,10 @@ rb_exp = StandardRB(
     physical_qubits=physical_qubits,
     lengths=lengths_orig,
     num_samples=nseeds_orig,
-    seed=42,
 )
 rb_exp.set_transpile_options(basis_gates=basis_gates_orig, optimization_level=0)
 
 print(f"Setting up StandardRB Experiment for {physical_qubits} qubits.")
-# ... (other print statements for setup)
 
 print(f"\nRunning StandardRB experiment...")
 exp_data: ExperimentData = rb_exp.run(backend=backend, shots=shots_orig)
@@ -83,7 +81,6 @@ if alpha_result:
 else:
     print("Alpha result not found.")
 
-# Plotting Customizations and Saving (No Display)
 print("\nCustomizing and saving RB plot as PNG...")
 output_filename = "customized_rb_plot.png"
 try:
