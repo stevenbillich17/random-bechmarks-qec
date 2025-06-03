@@ -233,7 +233,39 @@ results_dec_p2q = run_rb_experiment(
 )
 all_results.append(results_dec_p2q)
 
-# You can add a summary print here if you like:
+# --- Experiment 3: Varying Clifford Lengths ---
+
+# 3a. Shorter and Fewer Clifford Lengths
+print("\n--- Experiment 3a: Shorter and Fewer Clifford Lengths ---")
+shorter_fewer_lengths = [1, 5, 10, 20, 30, 40, 50] # Fewer points, max length 50
+results_shorter_lengths = run_rb_experiment(
+    experiment_name="Shorter_Fewer_Lengths",
+    physical_qubits_tuple=baseline_physical_qubits,
+    clifford_lengths=shorter_fewer_lengths, # Changed parameter
+    num_seeds=baseline_nseeds,
+    p1q_noise=baseline_p1Q,
+    p2q_noise=baseline_p2Q
+)
+all_results.append(results_shorter_lengths)
+
+# 3b. More Dense Clifford Lengths (covering similar or extended range)
+print("\n--- Experiment 3b: More Dense Clifford Lengths ---")
+longer_dense_lengths = np.linspace(1, 200, 15, dtype=int).tolist() # ~15 points from 1 to 200
+if 1 not in longer_dense_lengths and longer_dense_lengths[0] > 1:
+    longer_dense_lengths = [1] + longer_dense_lengths
+longer_dense_lengths = sorted(list(set(longer_dense_lengths)))
+print(f"Using lengths for 3b: {longer_dense_lengths}")
+
+results_longer_dense_lengths = run_rb_experiment(
+    experiment_name="Longer_Dense_Lengths",
+    physical_qubits_tuple=baseline_physical_qubits,
+    clifford_lengths=longer_dense_lengths,
+    num_seeds=baseline_nseeds,
+    p1q_noise=baseline_p1Q,
+    p2q_noise=baseline_p2Q
+)
+all_results.append(results_longer_dense_lengths)
+
 print("\n\n--- SUMMARY OF RESULTS ---")
 for res in all_results:
     print(f"Experiment: {res['name']:<20} | EPC: {res['epc']:.4e} \u00B1 {res['epc_err']:.1e} | Alpha: {res['alpha']:.4f} \u00B1 {res['alpha_err']:.1e}")
