@@ -1,18 +1,12 @@
-# Import general libraries
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.figure import Figure as MatplotlibFigure  # For isinstance check
+from matplotlib.figure import Figure as MatplotlibFigure
 import warnings
 
-# Import Qiskit classes (Modern)
 from qiskit_aer import AerSimulator
 from qiskit_aer.noise import NoiseModel, depolarizing_error
 
-# Import from qiskit_experiments
 from qiskit_experiments.library import StandardRB
 from qiskit_experiments.framework import ExperimentData
 
-# --- Suppress specific warnings ---
 warnings.filterwarnings(
     "ignore",
     message="Providing `coupling_map` and/or `basis_gates` along with `backend` is not recommended.*",
@@ -160,5 +154,27 @@ except Exception as e:
     import traceback
 
     traceback.print_exc()
+
+# # WIP - not fully functional yet
+# # Problems occurring from other components error
+# print("\n--- Consistency Check for CX Gate Error (I tried but it did not work that smooth) ---")
+#
+# epg_cx_model = (3 * p2Q_orig) / 4
+# print(f"Model EPG for CX (from p2Q={p2Q_orig}): {epg_cx_model:.4e}")
+#
+# epg_cx_exp_result = exp_data.analysis_results("EPG_cx", dataframe=False) # NOT SURE IF THIS IS THE CORRECT NAME (NO DOCUMENTATION !!!)
+#
+# if epg_cx_exp_result:
+#     experimental_epg_cx_value = epg_cx_exp_result.value.nominal_value
+#     experimental_epg_cx_stderr = epg_cx_exp_result.value.std_dev
+#     print(f"Experimental EPG for CX (from RB analysis): {experimental_epg_cx_value:.4e} \u00B1 {experimental_epg_cx_stderr:.4e}")
+#
+#     if abs(experimental_epg_cx_value - epg_cx_model) < 3 * experimental_epg_cx_stderr : # Check within ~3 sigma
+#         print("=> The experimental EPG_cx is consistent with the input noise model for CX.")
+#     else:
+#         print("=> The experimental EPG_cx shows some deviation from the input noise model for CX.")
+#         print(f"   Difference: {abs(experimental_epg_cx_value - epg_cx_model):.4e}")
+# else:
+#     print("Experimental EPG_cx result not found in RB analysis output.")
 
 print("\nScript finished.")
